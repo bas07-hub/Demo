@@ -1,5 +1,5 @@
 #Testing
 
-whoami
-hostname
-net user
+whoami > C:\temp\whoami.txt
+hostname > C:\temp\hostname.txt
+net user > C:\temp\netuser.txt
