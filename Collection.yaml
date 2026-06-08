@@ -1,0 +1,41 @@
+commands:
+
+# T1115
+- id: 1
+  technique: "T1115 - Utilize Clipboard to store or execute commands from"
+  command: |
+    $users = Get-LocalUser | Format-Table Name, FullName, Enabled, LastLogon | Out-String;
+    $users | Set-Clipboard;
+    $clipboardContent = Get-Clipboard;
+    $clipboardContent | Out-File -FilePath C:\system34\Collection_Output\T1115_Collection_Test1.txt -Encoding UTF8;
+  executor: "powershell"
+  file_name: "T1115_Collection_Test_1"
+
+- id: 1
+  technique: "T1115 - Execute Commands from Clipboard using PowerShell"
+  command: |
+    $command = systeminfo;
+    $command | Set-Clipboard;
+    $clipboardContent = Get-Clipboard;
+    $clipboardContent | Out-File -FilePath C:\system34\Collection_Output\T1115_Collection_Test2.txt -Encoding UTF8;
+  executor: "powershell"
+  file_name: "T1115_Collection_Test_2"
+
+# ------------------------------------------------------------------------------------------------------------------------
+
+# T1113
+- id: 2
+  technique: "T1113 - Windows Screen Capture (CopyFromScreen)"
+  command: |
+    Add-Type -AssemblyName System.Windows.Forms
+    $screen = [Windows.Forms.SystemInformation]::VirtualScreen
+    $bitmap = New-Object Drawing.Bitmap $screen.Width, $screen.Height
+    $graphic = [Drawing.Graphics]::FromImage($bitmap)
+    $graphic.CopyFromScreen($screen.Left, $screen.Top, 0, 0, $bitmap.Size)
+    $bitmap.Save('C:\system34\Collection_Output\T1113_Collection.png')
+  executor: "powershell"
+  file_name: "T1113_Collection$"
+
+paths:
+  baseFolder: "C:\\system34"
+  outputFolder: "C:\\system34\\Collection_Output"
